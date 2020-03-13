@@ -13,6 +13,6 @@ const DOCROUTES = VERSION + "/docs"
 
 func (rLoader *V1RouterLoader) initDocs(router *gin.Engine) {
 	group := router.Group(DOCROUTES)
-	url := ginSwagger.URL("swagger/doc.json") // The url pointing to API definition
+	url := ginSwagger.URL("swagger/doc.json")
 	group.GET("/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 }
