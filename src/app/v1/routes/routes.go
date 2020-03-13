@@ -30,5 +30,6 @@ type V1RouterLoaderInterface interface {
 // V1Routes Params
 // @router: gin.Engine
 func (rLoader *V1RouterLoader) V1Routes(router *gin.Engine) {
+	rLoader.initDocs(router)
 	rLoader.initHealth(router)
 }
