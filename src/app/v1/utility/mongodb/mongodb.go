@@ -89,5 +89,5 @@ func (mongolib *MongoDB) Edit(collection string, filter, data interface{}) (*mon
 	if err != nil {
 		return nil, err
 	}
-	return db.Collection("student").UpdateOne(ctx, filter, bson.M{"$set": data})
+	return db.Collection(collection).UpdateOne(ctx, filter, bson.M{"$set": data})
 }
