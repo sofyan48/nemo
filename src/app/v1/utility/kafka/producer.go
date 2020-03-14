@@ -9,27 +9,22 @@ import (
 )
 
 // InitProducer ...
-func (kafka *KafkaLibrary) InitProducer() (sarama.SyncProducer, error) {
-	configKafka := kafka.Init("", "")
+func (kafka *KafkaLibrary) initProducer() (sarama.SyncProducer, error) {
+	configKafka := kafka.init("", "")
 	kafkaHost := os.Getenv("KAFKA_HOST")
 	kafkaPort := os.Getenv("KAFKA_HOST")
 	return sarama.NewSyncProducer([]string{kafkaHost + ":" + kafkaPort}, configKafka)
 }
 
-// GetMessageInput ...
-func (kafka *KafkaLibrary) GetMessageInput() *ProducersMessageFormat {
-	return &ProducersMessageFormat{}
-}
-
-// SendMessages ...
-func (kafka *KafkaLibrary) SendEvent(topic string, payload *ProducersMessageFormat) (*ProducersMessageFormat, int64, error) {
+// SendEvent ...
+func (kafka *KafkaLibrary) SendEvent(topic string, payload *StateFullFormat) (*StateFullFormat, int64, error) {
 	now := time.Now()
-	fixPayload := &ProducersMessageFormat{}
+	fixPayload := &StateFullFormat{}
 	fixPayload.Action = payload.Action
 	fixPayload.CreatedAt = &now
 	fixPayload.Data = payload.Data
 	fixPayload.UUID = uuid.New().String()
-	// producers, err := kafka.InitProducer()
+	// producers, err := kafka.initProducer()
 	// if err != nil {
 	// 	return nil,0, err
 	// }

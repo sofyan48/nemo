@@ -10,7 +10,7 @@ import (
 type KafkaLibrary struct{}
 
 // ProducersMessageFormat ...
-type ProducersMessageFormat struct {
+type StateFullFormat struct {
 	UUID      string            `json:"__id"`
 	Action    string            `json:"__action"`
 	Data      map[string]string `json:"data"`
@@ -25,12 +25,18 @@ func KafkaLibraryHandler() *KafkaLibrary {
 
 // KafkaLibraryInterface ...
 type KafkaLibraryInterface interface {
-	GetMessageInput() *ProducersMessageFormat
-	SendEvent(topic string, payload *ProducersMessageFormat) (*ProducersMessageFormat, int64, error)
+	GetStateFull() *StateFullFormat
+	SendEvent(topic string, payload *StateFullFormat) (*StateFullFormat, int64, error)
+	InitConsumer() (sarama.Consumer, error)
+}
+
+// GetStateFull ...
+func (kafka *KafkaLibrary) GetStateFull() *StateFullFormat {
+	return &StateFullFormat{}
 }
 
 // Init ...
-func (kafka *KafkaLibrary) Init(username, password string) *sarama.Config {
+func (kafka *KafkaLibrary) init(username, password string) *sarama.Config {
 	kafkaConfig := sarama.NewConfig()
 	kafkaConfig.Producer.Return.Successes = true
 	kafkaConfig.Net.WriteTimeout = 5 * time.Second
