@@ -24,7 +24,7 @@ type UserEventInterface interface {
 
 // UserCreateEvent ...
 func (event *UserEvent) UserCreateEvent(data *entity.UserEvent) (*entity.UserEvent, error) {
-	format := event.Kafka.GetMessageInput()
+	format := event.Kafka.GetStateFull()
 	format.Action = data.Action
 	format.CreatedAt = data.CreatedAt
 	format.Data = data.Data
