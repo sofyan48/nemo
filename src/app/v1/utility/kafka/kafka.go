@@ -9,6 +9,15 @@ import (
 // KafkaLibrary ...
 type KafkaLibrary struct{}
 
+// ProducersMessageFormat ...
+type ProducersMessageFormat struct {
+	UUID      string            `json:"__id"`
+	Action    string            `json:"__action"`
+	Data      map[string]string `json:"data"`
+	Offset    int64             `json:"offset"`
+	CreatedAt *time.Time        `json:"created_at"`
+}
+
 // KafkaLibraryHandler ...
 func KafkaLibraryHandler() *KafkaLibrary {
 	return &KafkaLibrary{}
@@ -16,7 +25,8 @@ func KafkaLibraryHandler() *KafkaLibrary {
 
 // KafkaLibraryInterface ...
 type KafkaLibraryInterface interface {
-	Init(username, password string) *sarama.Config
+	GetMessageInput() *ProducersMessageFormat
+	SendEvent(topic string, payload *ProducersMessageFormat) (*ProducersMessageFormat, int64, error)
 }
 
 // Init ...

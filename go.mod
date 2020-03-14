@@ -4,12 +4,13 @@ go 1.13
 
 require (
 	cloud.google.com/go v0.54.0 // indirect
-	github.com/Shopify/sarama v1.26.1 // indirect
+	github.com/Shopify/sarama v1.26.1
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/apache/thrift v0.13.0 // indirect
 	github.com/garyburd/redigo v1.6.0
 	github.com/gin-gonic/gin v1.5.0
 	github.com/go-sql-driver/mysql v1.5.0
+	github.com/google/uuid v1.1.1
 	github.com/jinzhu/gorm v1.9.12
 	github.com/joho/godotenv v1.3.0
 	github.com/openzipkin/zipkin-go v0.1.6 // indirect
