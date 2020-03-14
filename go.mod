@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	cloud.google.com/go v0.54.0 // indirect
+	github.com/Shopify/sarama v1.26.1 // indirect
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/apache/thrift v0.13.0 // indirect
 	github.com/garyburd/redigo v1.6.0
@@ -18,5 +19,5 @@ require (
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.6.3
 	go.uber.org/zap v1.13.0
-	golang.org/x/crypto v0.0.0-20191205180655-e7c4368fe9dd
+	golang.org/x/crypto v0.0.0-20200204104054-c9f3fb736b72
 )
