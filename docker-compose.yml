@@ -1,23 +1,16 @@
 version: '3'
 services: 
-  database:
-    image: mysql:5.7
-    environment:
-      MYSQL_DATABASE: 'boiler'
-      MYSQL_USER: 'boiler'
-      MYSQL_PASSWORD: 'root'
-      MYSQL_ROOT_PASSWORD: 'root'
+  mongo:
+    image: mongo
     ports:
-      - '3306:3306'
-    expose:
-      - '3306'
+      - 27017:27017
+    # environment:
+    #   # MONGO_INITDB_ROOT_USERNAME: root
+    #   # MONGO_INITDB_ROOT_PASSWORD: root
+    #   # MONGO_INITDB_DATABASE: nemo
     volumes:
-      - ./mydb:/var/lib/mysql
-  rdcaches:
-    image: redis
-    command: ["redis-server"]
-    ports:
-      - "6379:6379"
+      - ./mongo:/data/db
+  
   zookeeper:
     image: confluentinc/cp-zookeeper:5.4.0
     hostname: zookeeper
@@ -45,3 +38,22 @@ services:
       KAFKA_ADVERTISED: 0.0.0.0
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+  # database:
+  #   image: mysql:5.7
+  #   environment:
+  #     MYSQL_DATABASE: 'boiler'
+  #     MYSQL_USER: 'boiler'
+  #     MYSQL_PASSWORD: 'root'
+  #     MYSQL_ROOT_PASSWORD: 'root'
+  #   ports:
+  #     - '3306:3306'
+  #   expose:
+  #     - '3306'
+  #   volumes:
+  #     - ./mydb:/var/lib/mysql
+  # rdcaches:
+  #   image: redis
+  #   command: ["redis-server"]
+  #   ports:
+  #     - "6379:6379"
+  
