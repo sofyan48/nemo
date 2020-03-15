@@ -1,4 +1,4 @@
-package v1
+package consumer
 
 import (
 	"encoding/json"
@@ -7,21 +7,21 @@ import (
 	"os"
 
 	"github.com/Shopify/sarama"
-	"github.com/sofyan48/nemo/src/app/v1/query/user"
 	"github.com/sofyan48/nemo/src/app/v1/utility/kafka"
+	"github.com/sofyan48/nemo/src/app/v1/utility/mongodb"
 )
 
 // V1ConsumerEvents ...
 type V1ConsumerEvents struct {
 	Kafka kafka.KafkaLibraryInterface
-	User  user.UserQueryInterface
+	Mongo mongodb.MongoDBInterface
 }
 
 // V1ConsumerEventsHandler ...
 func V1ConsumerEventsHandler() *V1ConsumerEvents {
 	return &V1ConsumerEvents{
 		Kafka: kafka.KafkaLibraryHandler(),
-		User:  user.UserQueryHandler(),
+		Mongo: mongodb.MongoDBHandler(),
 	}
 }
 
@@ -36,6 +36,7 @@ func (consumer *V1ConsumerEvents) Consume(topics []string, signals chan os.Signa
 	chanMessage := make(chan *sarama.ConsumerMessage, 256)
 	csm, err := consumer.Kafka.InitConsumer()
 	if err != nil {
+		fmt.Println("Error: ", err)
 		panic(err)
 	}
 	for _, topic := range topics {
@@ -49,15 +50,15 @@ func (consumer *V1ConsumerEvents) Consume(topics []string, signals chan os.Signa
 			go consumeMessage(csm, topic, partition, chanMessage)
 		}
 	}
-	log.Println("Kafka is consuming....")
+	log.Println("Event is Started....")
 
 ConsumerLoop:
 	for {
 		select {
 		case msg := <-chanMessage:
-			log.Println("New Event from , message: ", string(msg.Value))
 			json.Unmarshal(msg.Value, StateFullData)
-			fmt.Println(StateFullData)
+			log.Println("New Event from , Event: ", StateFullData.Action)
+			go consumer.Mongo.InsertOne(StateFullData.Action, StateFullData)
 		case sig := <-signals:
 			if sig == os.Interrupt {
 				break ConsumerLoop

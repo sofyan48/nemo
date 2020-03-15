@@ -10,6 +10,7 @@ import (
 
 	"github.com/joho/godotenv"
 	apiRouter "github.com/sofyan48/nemo/src/router"
+	"github.com/sofyan48/nemo/src/worker"
 )
 
 // ConfigEnvironment |
@@ -30,6 +31,7 @@ func main() {
 	}
 	flag.Parse()
 	ConfigEnvironment(*environment)
+	go worker.LoadWorker()
 	startApp()
 }
 

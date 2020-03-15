@@ -10,6 +10,6 @@ import (
 func (kafka *KafkaLibrary) InitConsumer() (sarama.Consumer, error) {
 	configKafka := kafka.init("", "")
 	kafkaHost := os.Getenv("KAFKA_HOST")
-	kafkaPort := os.Getenv("KAFKA_HOST")
+	kafkaPort := os.Getenv("KAFKA_PORT")
 	return sarama.NewConsumer([]string{kafkaHost + ":" + kafkaPort}, configKafka)
 }

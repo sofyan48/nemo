@@ -4,6 +4,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/sofyan48/nemo/src/app/v1/api/user/entity"
 	"github.com/sofyan48/nemo/src/app/v1/utility/kafka"
+	"github.com/sofyan48/nemo/src/app/v1/utility/mongodb"
 )
 
 // USEREVENT ...
@@ -12,12 +13,14 @@ const USEREVENT = "user_event"
 // UserEvent ...
 type UserEvent struct {
 	Kafka kafka.KafkaLibraryInterface
+	Mongo mongodb.MongoDBInterface
 }
 
 // UserEventHandler ...
 func UserEventHandler() *UserEvent {
 	return &UserEvent{
 		Kafka: kafka.KafkaLibraryHandler(),
+		Mongo: mongodb.MongoDBHandler(),
 	}
 }
 
@@ -36,6 +39,7 @@ func (event *UserEvent) UserCreateEvent(data *entity.UserEvent) (*entity.UserEve
 	go event.Kafka.SendEvent(USEREVENT, format)
 	data.UUID = format.UUID
 	data.Offset = format.Offset
-
+	data.History = format.History
+	data.Status = format.Status
 	return data, nil
 }

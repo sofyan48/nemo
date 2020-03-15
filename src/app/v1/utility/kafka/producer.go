@@ -36,7 +36,7 @@ func (kafka *KafkaLibrary) SendEvent(topic string, payload *StateFullFormat) (*S
 		return nil, 0, err
 	}
 	kafkaMsg := &sarama.ProducerMessage{
-		Topic: topic,
+		Topic: os.Getenv("KAFKA_TOPIC"),
 		Value: sarama.StringEncoder(data),
 	}
 	_, offset, err := producers.SendMessage(kafkaMsg)
@@ -49,7 +49,5 @@ func (kafka *KafkaLibrary) SendEvent(topic string, payload *StateFullFormat) (*S
 		"broker": "QUEUED",
 	}
 	fixPayload.Status = "QUEUED"
-	// logging events
-	go kafka.Mongo.InsertOne(topic, fixPayload)
 	return fixPayload, offset, nil
 }

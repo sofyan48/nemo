@@ -4,13 +4,10 @@ import (
 	"time"
 
 	"github.com/Shopify/sarama"
-	"github.com/sofyan48/nemo/src/app/v1/utility/mongodb"
 )
 
 // KafkaLibrary ...
-type KafkaLibrary struct {
-	Mongo mongodb.MongoDBInterface
-}
+type KafkaLibrary struct{}
 
 // ProducersMessageFormat ...
 type StateFullFormat struct {
@@ -25,9 +22,7 @@ type StateFullFormat struct {
 
 // KafkaLibraryHandler ...
 func KafkaLibraryHandler() *KafkaLibrary {
-	return &KafkaLibrary{
-		Mongo: mongodb.MongoDBHandler(),
-	}
+	return &KafkaLibrary{}
 }
 
 // KafkaLibraryInterface ...
