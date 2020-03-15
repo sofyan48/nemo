@@ -4,23 +4,30 @@ import (
 	"time"
 
 	"github.com/Shopify/sarama"
+	"github.com/sofyan48/nemo/src/app/v1/utility/mongodb"
 )
 
 // KafkaLibrary ...
-type KafkaLibrary struct{}
+type KafkaLibrary struct {
+	Mongo mongodb.MongoDBInterface
+}
 
 // ProducersMessageFormat ...
 type StateFullFormat struct {
-	UUID      string            `json:"__id"`
-	Action    string            `json:"__action"`
-	Data      map[string]string `json:"data"`
-	Offset    int64             `json:"offset"`
-	CreatedAt *time.Time        `json:"created_at"`
+	UUID      string            `json:"__uuid" bson:"__uuid"`
+	Action    string            `json:"__action" bson:"__action"`
+	Data      map[string]string `json:"data" bson:"data"`
+	Offset    int64             `json:"offset" bson:"offset"`
+	Status    string            `json:"status" bson:"status"`
+	History   map[string]string `json:"history" bson:"history"`
+	CreatedAt *time.Time        `json:"created_at" bson:"created_at"`
 }
 
 // KafkaLibraryHandler ...
 func KafkaLibraryHandler() *KafkaLibrary {
-	return &KafkaLibrary{}
+	return &KafkaLibrary{
+		Mongo: mongodb.MongoDBHandler(),
+	}
 }
 
 // KafkaLibraryInterface ...

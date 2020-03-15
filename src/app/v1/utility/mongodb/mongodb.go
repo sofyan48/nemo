@@ -22,6 +22,8 @@ type MongoDBInterface interface {
 	InsertOne(collection string, data interface{}) (*mongo.InsertOneResult, error)
 	InsertMany(collection string, data []interface{}) (*mongo.InsertManyResult, error)
 	Find(collection string, filter interface{}) (*mongo.Cursor, context.Context, error)
+	Delete(collection string, filter interface{}) (*mongo.DeleteResult, error)
+	Edit(collection string, filter, data interface{}) (*mongo.UpdateResult, error)
 }
 
 func (mongolib *MongoDB) init() (*mongo.Database, context.Context, error) {

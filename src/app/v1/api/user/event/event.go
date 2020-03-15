@@ -1,9 +1,13 @@
 package event
 
 import (
+	"github.com/google/uuid"
 	"github.com/sofyan48/nemo/src/app/v1/api/user/entity"
 	"github.com/sofyan48/nemo/src/app/v1/utility/kafka"
 )
+
+// USEREVENT ...
+const USEREVENT = "user_event"
 
 // UserEvent ...
 type UserEvent struct {
@@ -28,8 +32,10 @@ func (event *UserEvent) UserCreateEvent(data *entity.UserEvent) (*entity.UserEve
 	format.Action = data.Action
 	format.CreatedAt = data.CreatedAt
 	format.Data = data.Data
-	go event.Kafka.SendEvent("test_topic", format)
+	format.UUID = uuid.New().String()
+	go event.Kafka.SendEvent(USEREVENT, format)
 	data.UUID = format.UUID
 	data.Offset = format.Offset
+
 	return data, nil
 }
