@@ -36,10 +36,7 @@ func (event *UserEvent) UserCreateEvent(data *entity.UserEvent) (*entity.UserEve
 	format.CreatedAt = data.CreatedAt
 	format.Data = data.Data
 	format.UUID = uuid.New().String()
-	go event.Kafka.SendEvent(USEREVENT, format)
 	data.UUID = format.UUID
-	data.Offset = format.Offset
-	data.History = format.History
-	data.Status = format.Status
+	go event.Kafka.SendEvent(USEREVENT, format)
 	return data, nil
 }

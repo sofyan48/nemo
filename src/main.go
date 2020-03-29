@@ -13,7 +13,7 @@ import (
 	"github.com/sofyan48/nemo/src/worker"
 )
 
-// ConfigEnvironment |
+// ConfigEnvironment ...
 func ConfigEnvironment(env string) {
 	if env == "development" {
 		err := godotenv.Load()

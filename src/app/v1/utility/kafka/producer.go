@@ -27,12 +27,19 @@ func (kafka *KafkaLibrary) SendEvent(topic string, payload *StateFullFormat) (*S
 	fixPayload.UUID = payload.UUID
 	producers, err := kafka.initProducer()
 	if err != nil {
-		log.Println("Error 1: ", err)
+		log.Println(err)
 		return nil, 0, err
 	}
-	data, err := json.Marshal(payload)
+	HistoryStatus := HistoryStatefull{}
+	HistoryStatus.Code = 200
+	HistoryStatus.Description = "Processing in event store"
+	HistoryStatus.Name = "QUEUED"
+	HistoryStatusSlice := []HistoryStatefull{}
+	HistoryStatusSlice = append(HistoryStatusSlice, HistoryStatus)
+	fixPayload.History = HistoryStatusSlice
+	data, err := json.Marshal(fixPayload)
 	if err != nil {
-		log.Println("Error 2: ", err)
+		log.Println(err)
 		return nil, 0, err
 	}
 	kafkaMsg := &sarama.ProducerMessage{
@@ -41,13 +48,9 @@ func (kafka *KafkaLibrary) SendEvent(topic string, payload *StateFullFormat) (*S
 	}
 	_, offset, err := producers.SendMessage(kafkaMsg)
 	if err != nil {
-		log.Println("Error 3: ", err)
+		log.Println(err)
 		return nil, 0, err
 	}
 	fixPayload.Offset = offset
-	fixPayload.History = map[string]string{
-		"broker": "QUEUED",
-	}
-	fixPayload.Status = "QUEUED"
 	return fixPayload, offset, nil
 }
